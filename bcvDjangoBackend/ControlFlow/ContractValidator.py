@@ -20,3 +20,10 @@ class ContractValidator:
         except Exception as err:
             print(f"Error occured while performing ner : {err}")
     
+    def classifyText(self, plainText, nerText):
+        try:
+            classifier = main.TextClassifier(plainText,nerText)
+            text = classifier.classify()
+            return text
+        except Exception as err:
+            print(f"Error occured while reading pdf : {err}")
