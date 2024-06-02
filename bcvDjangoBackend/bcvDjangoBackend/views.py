@@ -1,10 +1,10 @@
 
 from django.http import HttpResponse
 
-def Pdf_highlighter(request):
+def pdf_highlighter(request):
     return HttpResponse("the component is for PDF highlight" )
 
-def Pdf_summury(request):
+def pdf_summary(request):
     return HttpResponse("the component is for PDF summury" )
 
 def home(request):
