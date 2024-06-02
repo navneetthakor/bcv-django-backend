@@ -15,4 +15,4 @@ class PdfParser:
       print(f"Error occured while reading pdf : {err}")
 
   def printPdf(self):
-    print(self.text)
+    return self.text
