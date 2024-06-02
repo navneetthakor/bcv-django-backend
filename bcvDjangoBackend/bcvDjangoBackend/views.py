@@ -6,6 +6,3 @@ def pdf_highlighter(request):
 
 def pdf_summary(request):
     return HttpResponse("the component is for PDF summury" )
-
-def home(request):
-    return HttpResponse("this home page" )
