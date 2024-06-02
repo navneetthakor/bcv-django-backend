@@ -27,3 +27,11 @@ class ContractValidator:
             return text
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
+
+    def compareText(self, plainText, classifiedText):
+        try:
+            textComparison = main.TextComparison(plainText,classifiedText)
+            text = textComparison.comparator()
+            return text
+        except Exception as err:
+            print(f"Error occured while reading pdf : {err}")
