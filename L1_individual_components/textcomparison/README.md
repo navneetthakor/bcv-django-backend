@@ -1,0 +1,1 @@
+# Readme for Text Comparison component

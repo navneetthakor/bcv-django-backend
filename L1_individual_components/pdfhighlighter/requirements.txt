@@ -1,0 +1,1 @@
+# requirements file for Pdf Highlighter component
