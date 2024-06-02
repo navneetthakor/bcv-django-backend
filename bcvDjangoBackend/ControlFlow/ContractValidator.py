@@ -7,8 +7,16 @@ class ContractValidator:
     def parsePdf(self):
         try:
             pdfparser = main.PdfParser(self.defultFileUrl)
-            pdfparser.readPdf()
-            text =  pdfparser.printPdf()
+            text = pdfparser.readPdf()
             return text
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
+    
+    def performNer(self, plainText):
+        try:
+            ner = main.Ner(plainText)
+            nerText = ner.ner()
+            return nerText
+        except Exception as err:
+            print(f"Error occured while performing ner : {err}")
+    

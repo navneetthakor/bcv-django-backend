@@ -6,6 +6,7 @@ class Ner:
   def ner(self):
     try:
       print("dummy ner method")
+      return {}
     except Exception as err:
       print(f"Error occured while reading pdf : {err}")
 
