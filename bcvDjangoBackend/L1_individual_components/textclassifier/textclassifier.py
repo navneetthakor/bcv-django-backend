@@ -2,7 +2,7 @@
 class TextClassifier:
   
   def __init__(self, pdfPath , ContractType):
-    self.text = pdfText
+    self.pdfPath = pdfPath
     self.type = ContractType
     self.paragraphs = None
 
@@ -60,14 +60,14 @@ class TextClassifier:
       heading = []
 
       for i in data:
-        if i['agreeType'] == ContractType :
+        if i['agreeType'] == self.ContractType :
           for clause in i['clauses']:
             heading.append(clause)
 
       if type in type1 :
-        paragraphs = Type1_classify(pdfPath, heading)
+        self.paragraphs = Type1_classify(self.pdfPath, heading)
       else :
-        paragraphs = type2_classify(pdfPath, heading)
+        self.paragraphs = type2_classify(self.pdfPath, heading)
         
         
       print("dummy text classifier method")
@@ -77,5 +77,5 @@ class TextClassifier:
 
   def printClassify(self):
     print("dummy classify print method")
-    for heading, paragraph in paragraphs.items():
+    for heading, paragraph in self.paragraphs.items():
       print(f"{heading}:\n{paragraph}\n\n")
