@@ -15,6 +15,8 @@ paragraphs_contract = classifyInstance2.classify()
 
 # Instantiating an NER instance of  Ner class
 comparisonInstance = TextComparison(paragraphs_template ,paragraphs_contract)
+
+dict = comparisonInstance.comparator()
   
 
 # NER method for printing the entities
