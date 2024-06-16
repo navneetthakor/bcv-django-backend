@@ -1,10 +1,14 @@
 from textclassifier import TextClassifier
+import pdfplumber
+import json
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextContainer, LTTextLine, LTChar
 
 # Instantiating an NER instance of  Ner class
-classifyInstance = TextClassifier("text")
+classifyInstance = TextClassifier(pdfPath , ContractType)
 
 # NER main function for making entity relations
-classifyInstance.classify()
+paragraph = classifyInstance.classify()
 
 # NER method for printing the entities
 classifyInstance.printClassify()
