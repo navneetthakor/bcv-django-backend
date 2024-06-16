@@ -42,7 +42,7 @@ def pdf_summury(request):
     return HttpResponse("the component is for PDF summury" )
 
 def home(request):
-    return render(request , 'index.html')
+    return HttpResponse('index.html')
 
 
 def download_pdf(public_id):
