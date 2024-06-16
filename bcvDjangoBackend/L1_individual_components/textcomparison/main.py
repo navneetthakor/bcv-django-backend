@@ -4,6 +4,8 @@ import os
 import json
 import google.generativeai as genai
 
+dict = {}
+
 # Instantiating an NER instance of  Ner class
 classifyInstance1 = TextClassifier(pdfPath_template , ContractType)
 classifyInstance2 = TextClassifier(pdfPath_contract , ContractType)
@@ -30,7 +32,8 @@ count = 0
 
 for heading, paragraph in paragraphs_contract.items():
   if heading in template_headning :
-    comparisonInstance.comparator(template_text[count] , paragraph )
+    result = comparisonInstance.comparator(template_text[count] , paragraph )
+    dict[heading] = result
   count = count + 1
     
   
