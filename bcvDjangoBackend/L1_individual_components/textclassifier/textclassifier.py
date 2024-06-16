@@ -1,8 +1,7 @@
 
 class TextClassifier:
-  def __init__(self, pdfText, nerText):
+  def __init__(self, pdfText):
     self.text = pdfText
-    self.nerText = nerText
 
   def classify(self):
     try:
