@@ -4,7 +4,7 @@ from textclassifier import TextClassifier
 classifyInstance = TextClassifier("text")
 
 # NER main function for making entity relations
-classifyInstance.classify()
+classifyInstance.classify(pdfType , ContractType)
 
 # NER method for printing the entities
 classifyInstance.printClassify()
