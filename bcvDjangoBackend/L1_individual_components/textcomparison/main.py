@@ -10,7 +10,7 @@ paragraphs_template = classifyInstance1.classify()
 paragraphs_contract = classifyInstance2.classify()
 
 # Instantiating an NER instance of  Ner class
-comparisonInstance = TextComparison(paragraphs_template , paragraphs_contract)
+comparisonInstance = TextComparison()
 
 template_headning = []
 contract_headning = []
