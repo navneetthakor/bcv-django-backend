@@ -2,13 +2,15 @@ from textcomparison import TextComparison
 from textclassifier import TextClassifier
 
 # Instantiating an NER instance of  Ner class
-classifyInstance = TextClassifier(pdfPath , ContractType)
+classifyInstance1 = TextClassifier(pdfPath_template , ContractType)
+classifyInstance2 = TextClassifier(pdfPath_contract , ContractType)
 
 # NER main function for making entity relations
-paragraphs = classifyInstance.classify(pdfType , ContractType)
+paragraphs_template = classifyInstance1.classify()
+paragraphs_contract = classifyInstance2.classify()
 
 # Instantiating an NER instance of  Ner class
-comparisonInstance = TextComparison(paragraphs)
+comparisonInstance = TextComparison(paragraphs_template , paragraphs_contract)
 
 # NER main function for making entity relations
 comparisonInstance.comparator()
