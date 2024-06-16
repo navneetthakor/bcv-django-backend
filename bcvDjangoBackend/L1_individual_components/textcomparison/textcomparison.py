@@ -9,8 +9,11 @@ class TextComparison:
       }
       pairs.append(pair)
     
-  def __init__(self):
+  def __init__(self , paragraphs_template ,paragraphs_contract):
     self.pairs = []
+    self.paragraphs_template = paragraphs_template
+    self.paragraphs_contract = paragraphs_contract
+    self.dict = {}
     self. result = ""
     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
@@ -46,7 +49,7 @@ class TextComparison:
         add_pair(template_text, contract_text, output)
     
 
-  def comparator(template_text , contract_text):
+  def individual_comparator(template_text , contract_text):
     try:
       add_pair(template_text , contract_text, "")
       
@@ -67,6 +70,29 @@ class TextComparison:
       return result.text
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
+
+   def comparator(self):
+      template_headning = []
+      contract_headning = []
+      template_text = []
+      contract_text = []
+
+      # NER main function for making entity relations
+
+      for heading, paragraph in paragraphs_template.items():
+          template_headning.append(heading)
+          template_headning.append(heading)
+  
+      count = 0
+   
+      for heading, paragraph in paragraphs_contract.items():
+        if heading in template_headning :
+          result = comparisonInstance.individual_comparator(template_text[count] , paragraph )
+          dict[heading] = result
+        count = count + 1
+
+      return self.dict
+      
 
   def printComparison(self):
     print("dummy comparator print method")
