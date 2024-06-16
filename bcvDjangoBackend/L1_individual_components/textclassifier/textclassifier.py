@@ -3,6 +3,7 @@ class TextClassifier:
   def __init__(self, pdfPath , ContractType):
     self.text = pdfText
     self.type = ContractType
+    self.paragraphs
 
   def Type1_classify(pdf_path, headings):
     # Extract text from the PDF
@@ -69,9 +70,11 @@ class TextClassifier:
         
         
       print("dummy text classifier method")
-      return "text clssified"
+      return paragraphs
     except Exception as err:
       print(f"Error occured while classifying text : {err}")
 
   def printClassify(self):
     print("dummy classify print method")
+    for heading, paragraph in paragraphs.items():
+      print(f"{heading}:\n{paragraph}\n\n")
