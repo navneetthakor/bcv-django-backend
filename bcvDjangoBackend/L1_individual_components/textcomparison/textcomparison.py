@@ -1,7 +1,7 @@
 
 class TextComparison:
-  def __init__(self, pdfText, classifiedText):
-    self.text = pdfText
+  def __init__(self, paragraph, classifiedText):
+    self.paragraph = paragraph
 
   def comparator(self):
     try:
