@@ -1,9 +1,10 @@
 
 class TextClassifier:
+  
   def __init__(self, pdfPath , ContractType):
     self.text = pdfText
     self.type = ContractType
-    self.paragraphs
+    self.paragraphs = None
 
   def Type1_classify(pdf_path, headings):
     # Extract text from the PDF

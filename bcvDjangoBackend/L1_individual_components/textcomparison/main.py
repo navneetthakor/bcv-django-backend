@@ -1,5 +1,8 @@
 from textcomparison import TextComparison
 from textclassifier import TextClassifier
+import os
+import json
+import google.generativeai as genai
 
 # Instantiating an NER instance of  Ner class
 classifyInstance1 = TextClassifier(pdfPath_template , ContractType)

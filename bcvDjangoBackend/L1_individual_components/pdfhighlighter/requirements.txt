@@ -1,1 +1,1 @@
-# requirements file for Pdf Highlighter component
+pymupdf==1.24.5
