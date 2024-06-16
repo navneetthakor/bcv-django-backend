@@ -14,8 +14,8 @@ class TextComparison:
     self.paragraphs_template = paragraphs_template
     self.paragraphs_contract = paragraphs_contract
     self.dict = {}
-    self. result = ""
-    genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
+   
+     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
       # Create the model
       # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
@@ -96,4 +96,4 @@ class TextComparison:
 
   def printComparison(self):
     print("dummy comparator print method")
-    print(result.text)
+    print(self.dict)
