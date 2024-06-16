@@ -12,14 +12,19 @@ class Ner:
   def ner(self):
     try:
       print("Starting NER Task.....")
-
       self.sentence = Sentence(self.text)
 
       tagger.predict(self.sentence)
 
-      return {}
+      # Create dictionary of entities
+      entities = {}
+      for entity in self.sentence.get_spans('ner'):
+          entities[entity.text] = [entity.get_label('ner').value, entity.score]
+      return entities
+      
     except Exception as err:
-      print(f"Error occured while reading pdf : {err}")
+      print(f"Error occurred while reading pdf : {err}")
+      return {}
 
   def printNER(self):
     

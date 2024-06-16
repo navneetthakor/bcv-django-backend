@@ -4,7 +4,7 @@ from pdfparser import PdfParser
 pdfParserInstance = PdfParser("../../static/download.pdf")
 
 # Read method to read the input pdf.
-pdfParserInstance.readPdf()
+pdf_text = pdfParserInstance.readPdf()
 
 # Print method to print the text of pdf.
 pdfParserInstance.printPdf()
