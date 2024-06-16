@@ -64,7 +64,7 @@ class TextComparison:
       
       
       print("dummy comparator method")
-      return "text compared"
+      return result.text
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
 
