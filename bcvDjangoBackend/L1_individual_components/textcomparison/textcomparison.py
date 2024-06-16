@@ -2,6 +2,16 @@
 class TextComparison:
   pairs = []
   result = ""
+
+   # Function to add pairs
+  def add_pair(template_text, contract_text, output):
+      pair = {
+          "template_text": template_text,
+          "contract_text": contract_text,
+          "output": output
+      }
+      pairs.append(pair)
+    
   def __init__(self):
      genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
@@ -38,14 +48,7 @@ class TextComparison:
           output = entry["output"]
           add_pair(template_text, contract_text, output)
       
-  # Function to add pairs
-  def add_pair(template_text, contract_text, output):
-      pair = {
-          "template_text": template_text,
-          "contract_text": contract_text,
-          "output": output
-      }
-      pairs.append(pair)
+ 
 
   def comparator(template_text , contract_text):
     try:
