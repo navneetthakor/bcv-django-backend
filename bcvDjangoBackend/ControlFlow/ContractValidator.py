@@ -23,15 +23,15 @@ class ContractValidator:
     def classifyText(self, pdfPath, ContractType):
         try:
             classifier = main.TextClassifier(pdfPath,ContractType)
-            text = classifier.classify()
-            return text
+            paragraph = classifier.classify()
+            return paragraph
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
 
-    def compareText(self, plainText, classifiedText):
+    def compareText(self):
         try:
-            textComparison = main.TextComparison(plainText,classifiedText)
-            text = textComparison.comparator()
-            return text
+            textComparison = main.TextComparison(paragraphs_template ,paragraphs_contract)
+            dict = textComparison.comparator()
+            return dict
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
