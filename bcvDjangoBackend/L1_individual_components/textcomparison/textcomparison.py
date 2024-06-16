@@ -1,8 +1,5 @@
 
-class TextComparison:
-  
-  result = ""
-
+class TextComparison:   
    # Function to add pairs
   def add_pair(template_text, contract_text, output):
       pair = {
@@ -14,42 +11,40 @@ class TextComparison:
     
   def __init__(self):
     self.pairs = []
-     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
+    self. result = ""
+    genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
       # Create the model
       # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
-      generation_config = {
-        "temperature": 1,
-        "top_p": 0.95,
-        "top_k": 64,
-        "max_output_tokens": 8192,
-        "response_mime_type": "text/plain",
+    generation_config = {
+      "temperature": 1,
+      "top_p": 0.95,
+      "top_k": 64,
+      "max_output_tokens": 8192,
+      "response_mime_type": "text/plain",
       }
       
-      model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
-        generation_config=generation_config,
+    model = genai.GenerativeModel(
+      model_name="gemini-1.5-flash",
+      generation_config=generation_config,
         # safety_settings = Adjust safety settings
         # See https://ai.google.dev/gemini-api/docs/safety-settings
-      )
+    )
 
-            # List to store pairs
-      temp = []
+    # List to store pairs
+    temp = []
       
-      # Load the JSON file
-      with open('pairs.json', 'r') as f:
-          temp = json.load(f)
-
-      
-      
-      # Loop through each entry in the JSON data and add pairs
-      for entry in temp:
-          template_text = entry["template_text"]
-          contract_text = entry["contract_text"]
-          output = entry["output"]
-          add_pair(template_text, contract_text, output)
-      
- 
+    # Load the JSON file
+    with open('pairs.json', 'r') as f:
+        temp = json.load(f)
+  
+    # Loop through each entry in the JSON data and add pairs
+    for entry in temp:
+        template_text = entry["template_text"]
+        contract_text = entry["contract_text"]
+        output = entry["output"]
+        add_pair(template_text, contract_text, output)
+    
 
   def comparator(template_text , contract_text):
     try:
