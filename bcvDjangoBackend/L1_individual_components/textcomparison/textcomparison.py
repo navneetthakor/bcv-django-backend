@@ -1,6 +1,6 @@
 
 class TextComparison:
-  pairs = []
+  
   result = ""
 
    # Function to add pairs
@@ -13,6 +13,7 @@ class TextComparison:
       pairs.append(pair)
     
   def __init__(self):
+    self.pairs = []
      genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
       # Create the model
