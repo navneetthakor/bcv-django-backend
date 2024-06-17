@@ -11,7 +11,7 @@ import google.generativeai as genai
 
 
 
-class summary :
+class Summary :
     
   def __init__(self):
     genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
@@ -32,15 +32,19 @@ class summary :
     )
 
   def getSummary(self, nerText, plainText):
-    response = self.model.generate_content([
-      "input: * **Document:** \"The Acme Corporation is pleased to announce a new partnership with GreenTech Solutions to develop a sustainable energy project in California. The project, which is expected to be completed by December 2025 , will have a budget of $10 million. John Smith, CEO of Acme Corporation, will oversee the project.\" * **NER Results:** [{\"text\": \"Acme Corporation\", \"entity_type\": \"Organization\"},{\"text\": \"GreenTech Solutions\", \"entity_type\": \"Organization\"},{\"text\": \"California\", \"entity_type\": \"Location\"},{\"text\": \"December 2025\", \"entity_type\": \"Date\"},{\"text\": \"$10 million\", \"entity_type\": \"Money\"},{\"text\": \"John Smith\", \"entity_type\": \"Person\"},]",
+    try:
+      response = self.model.generate_content([
+        "input: * **Document:** \"The Acme Corporation is pleased to announce a new partnership   with GreenTech Solutions to develop a sustainable energy project in California. The   project, which is expected to be completed by December 2025 , will have a budget of $10   million. John Smith, CEO of Acme Corporation, will oversee the project.\" * **NER   Results:** [{\"text\": \"Acme Corporation\", \"entity_type\": \"Organization\"},  {\"text\": \"GreenTech Solutions\", \"entity_type\": \"Organization\"},{\"text\":   \"California\", \"entity_type\": \"Location\"},{\"text\": \"December 2025\",  \"entity_type\": \"Date\"},{\"text\": \"$10 million\", \"entity_type\": \"Money\"},  {\"text\": \"John Smith\", \"entity_type\": \"Person\"},]",
 
-      "output: Acme Corporation (Organization) is partnering with GreenTech Solutions (Organization) on a sustainable energy project in California (Location). The project is expected to be finished by December 2025 (Date) with a budget of $10 million (Money). John Smith (Person), CEO of Acme Corporation, will lead the project.",
+        "output: Acme Corporation (Organization) is partnering with GreenTech Solutions   (Organization) on a sustainable energy project in California (Location). The project is   expected to be finished by December 2025 (Date) with a budget of $10 million (Money).   John Smith (Person), CEO of Acme Corporation, will lead the project.",
 
-      f"input: * **Document:** {plainText} * **NER Results:** {nerText}",
+        f"input: * **Document:** \"{plainText}\" * **NER Results:** \"{nerText}\"",
 
-      "output: ",
-    ])
+        "output: ",
+      ])
 
-    return response.text
+      return response.text
+    except Exception as err:
+      print(err)
+      raise Exception('error occured in summary component')
     

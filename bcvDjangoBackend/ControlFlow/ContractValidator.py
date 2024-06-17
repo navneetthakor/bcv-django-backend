@@ -82,4 +82,13 @@ class ContractValidator:
         except Exception as err:
             print(f"Error occured while highlighting pdf : {err}")
             raise Exception(f"Error occured while highlighting pdf : {err}")
+        
+    def getSummary(self,ner_dict, inputText):
+        try:
+            summary = main.Summary()
+            text = summary.getSummary(ner_dict, inputText)
+            return text
+        except Exception as err:
+            print(f"Error occured in summary : {err}")
+            raise Exception(f"Error occured in summary : {err}")
 
