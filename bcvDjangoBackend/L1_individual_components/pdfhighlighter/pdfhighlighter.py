@@ -43,9 +43,7 @@ class PdfHighlighter:
       doc.save(highligh_pdf_path)
       doc.close() 
 
-    ` return highligh_pdf_path
-
-
-
+      return highligh_pdf_path
+    
     except Exception as err:
       print(f"Error occured while reading pdf : {err}")
