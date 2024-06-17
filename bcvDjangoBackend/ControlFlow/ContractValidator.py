@@ -46,11 +46,23 @@ class ContractValidator:
             return paragraph
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
+            return 'error'
 
-    def compareText(self):
+    def compareText(self, paragraphs_template, paragraphs_contract):
         try:
             textComparison = main.TextComparison(paragraphs_template ,paragraphs_contract)
             dict = textComparison.comparator()
             return dict
         except Exception as err:
-            print(f"Error occured while reading pdf : {err}")
+            print(f"Error occured while text comparison: {err}")
+            return 'error'
+        
+    def highlightPdf(self,inputPdfUrl, ner_dict):
+        try:
+            pdfHigltr = main.PdfHighlighter(inputPdfUrl, ner_dict)
+            pdfHigltr.highlight()
+            return 'success'
+        except Exception as err:
+            print(f"Error occured while highlighting pdf : {err}")
+            return 'error'
+
