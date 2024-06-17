@@ -34,8 +34,11 @@ class PdfHighlighter:
             for inst in instance:
                 page.add_highlight_annot(inst)
 
+ 
+
+
       # Save the modified PDF
-      doc.save("highlighted.pdf")
+      doc.save("..highlighted.pdf")
       doc.close() 
 
 
