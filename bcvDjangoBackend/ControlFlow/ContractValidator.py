@@ -1,9 +1,10 @@
 from L1_individual_components import main
 
 class ContractValidator:
-    def __init__(self, inputPdfUrl, templatePdfUrl):
+    def __init__(self, inputPdfUrl, templatePdfUrl, agreeType):
         self.inputPdfUrl = inputPdfUrl
         self.templatePdfUrl = templatePdfUrl
+        self.agreeType = agreeType
     
     def parsePdfHelper(pdfUrl):
         try:
@@ -12,7 +13,7 @@ class ContractValidator:
             return text
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
-            return 'error'
+            raise Exception(f"Error occured while reading pdf : {err}")
 
     def parseTemplatePdf(self):
         try:
@@ -20,7 +21,7 @@ class ContractValidator:
             return txt
         except Exception as err:
             print(f"Error occured while parsing template pdf : {err}")
-            return 'error'
+            raise Exception(f"Error occured while parsing template pdf : {err}")
         
     def parseInputPdf(self):
         try:
@@ -28,7 +29,7 @@ class ContractValidator:
             return txt
         except Exception as err:
             print(f"Error occured while parsing input pdf : {err}")
-            return 'error'
+            raise Exception(f"Error occured while parsing input pdf : {err}")
     
     def performNer(self, plainText):
         try:
@@ -37,16 +38,32 @@ class ContractValidator:
             return nerText
         except Exception as err:
             print(f"Error occured while performing ner : {err}")
-            return 'error'
+            raise Exception(f"Error occured while performing ner : {err}")
     
-    def classifyText(self, pdfPath, ContractType):
+    def classifyText(self, pdfPath):
         try:
-            classifier = main.TextClassifier(pdfPath,ContractType)
+            classifier = main.TextClassifier(pdfPath,self.agreeType)
             paragraph = classifier.classify()
             return paragraph
         except Exception as err:
             print(f"Error occured while reading pdf : {err}")
-            return 'error'
+            raise Exception(f"Error occured while reading pdf : {err}")
+        
+    def classifyInputText(self):
+        try:
+            text = self.classifyText(self.inputPdfUrl)
+            return text
+        except Exception as err:
+            print(f"Error occured while reading pdf : {err}")
+            raise Exception(f"Error occured while reading pdf : {err}")
+            
+    def classifyTemplateText(self):
+        try:
+            text = self.classifyText(self.templatePdfUrl)
+            return text
+        except Exception as err:
+            print(f"Error occured while reading pdf : {err}")
+            raise Exception(f"Error occured while reading pdf : {err}")
 
     def compareText(self, paragraphs_template, paragraphs_contract):
         try:
@@ -55,14 +72,14 @@ class ContractValidator:
             return dict
         except Exception as err:
             print(f"Error occured while text comparison: {err}")
-            return 'error'
+            raise Exception(f"Error occured while text comparison: {err}")
         
-    def highlightPdf(self,inputPdfUrl, ner_dict):
+    def highlightPdf(self,ner_dict):
         try:
-            pdfHigltr = main.PdfHighlighter(inputPdfUrl, ner_dict)
+            pdfHigltr = main.PdfHighlighter(self.inputPdfUrl, ner_dict)
             pdfHigltr.highlight()
             return 'success'
         except Exception as err:
             print(f"Error occured while highlighting pdf : {err}")
-            return 'error'
+            raise Exception(f"Error occured while highlighting pdf : {err}")
 
