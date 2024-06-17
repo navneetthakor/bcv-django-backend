@@ -8,6 +8,12 @@ from cloudinary.utils import cloudinary_url
 import urllib.parse
 from django.conf import settings
 
+# for contractify route 
+from ControlFlow.main import validatContract
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+
 # The cloudinary credential
 cloudinary.config(
     cloud_name='dzlv9zrk8',
@@ -39,8 +45,26 @@ def pdf_highlighter(request):
      
      return HttpResponse("Send a GET request to upload the PDF file.")
 
-def pdf_summury(request):
-    return HttpResponse("the component is for PDF summury" )
+def contractify(request):
+    if request.method == 'POST':
+        try:
+            # Access raw data
+            data = json.loads(request.body)
+            inputUrl = data.get('inputUrl')
+            templateUrl = data.get('templateUrl')
+            agreeType = data.get('agreeType')
+            clauses = data.get('clauses')
+
+            # save pdfs 
+            
+            
+            # Process the data (example)
+            response_data = validatContract()
+            
+            return JsonResponse(response_data)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 def home(request):
     return HttpResponse()
