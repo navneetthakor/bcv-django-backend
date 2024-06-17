@@ -6,6 +6,7 @@ import cloudinary.uploader
 import requests
 from cloudinary.utils import cloudinary_url
 import urllib.parse
+from django.conf import settings
 
 # The cloudinary credential
 cloudinary.config(
@@ -42,7 +43,7 @@ def pdf_summury(request):
     return HttpResponse("the component is for PDF summury" )
 
 def home(request):
-    return HttpResponse('index.html')
+    return HttpResponse()
 
 
 def download_pdf(public_id):
@@ -59,7 +60,8 @@ def download_pdf(public_id):
         # Fetching the name of the file
         parsed_url = urllib.parse.urlparse(public_id)
         filename = parsed_url.path.split("/")[-1]
-        path =  "D:\\Ronak\\intel_back_end_django\\bcv_backend\\static\\" + filename 
+        STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
+        path = os.path.join(STATIC_ROOT_PATH, filename)
 
         if response.status_code == 200:
             # Storing the file locally
