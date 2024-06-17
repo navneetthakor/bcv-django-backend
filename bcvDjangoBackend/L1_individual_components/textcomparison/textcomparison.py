@@ -1,14 +1,10 @@
+from textclassifier import TextClassifier
+import os
+import json
+import google.generativeai as genai
 
 class TextComparison:   
-   # Function to add pairs
-  def add_pair(template_text, contract_text, output):
-      pair = {
-          "template_text": template_text,
-          "contract_text": contract_text,
-          "output": output
-      }
-      pairs.append(pair)
-    
+        
   def __init__(self , paragraphs_template ,paragraphs_contract):
     self.pairs = []
     self.paragraphs_template = paragraphs_template
@@ -46,21 +42,22 @@ class TextComparison:
         template_text = entry["template_text"]
         contract_text = entry["contract_text"]
         output = entry["output"]
-        add_pair(template_text, contract_text, output)
+        pair = {
+          "template_text": template_text,
+          "contract_text": contract_text,
+          "output": output
+        }
+        pairs.append(pair)
     
 
   def individual_comparator(template_text , contract_text):
     try:
-      add_pair(template_text , contract_text, "")
-      
       # Concatenate all input-output pairs into a single string
       combined_input = ""
       for pair in pairs[:-1]:
           combined_input += f"input: \"template text\" : \"{pair['template_text']}\"\n\n\"contract text\" : \"{pair['contract_text']}\"\n\nquery : find the difference in contract text in the context of the template text\nand provide it in brief\noutput: {pair['output']}\n\n"
       
-      # Add the last pair without the output
-      last_pair = pairs[-1]
-      combined_input += f"input: \"template text\" : \"{last_pair['template_text']}\"\n\n\"contract text\" : \"{last_pair['contract_text']}\"\n\nquery : find the difference in contract text in the context of the template text\nand provide it in brief"
+      combined_input += f"input: \"template text\" : \"{template_text}\"\n\n\"contract text\" : \"{contract_text}\"\n\nquery : find the difference in contract text in the context of the template text\nand provide it in brief"
       
       # Generate content for the last pair using the combined input
       result = model.generate_content([combined_input])
