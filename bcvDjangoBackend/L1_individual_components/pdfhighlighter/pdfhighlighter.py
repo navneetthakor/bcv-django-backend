@@ -1,4 +1,10 @@
 import pymupdf
+import os
+import cloudinary
+import cloudinary.uploader
+import requests
+from cloudinary.utils import cloudinary_url
+import urllib.parse
 
 class PdfHighlighter:
   def __init__(self, pdf_path, ner_dict):
@@ -7,6 +13,12 @@ class PdfHighlighter:
     self.list = []
 
   def highlight(self):
+    # The cloudinary credential
+    cloudinary.config(
+        cloud_name='dzlv9zrk8',
+        api_key='689549637748837',
+        api_secret='8FaQn5CszbftFojnsUnPUN0Z7tM'
+    )
     try:
       print("highlighting user pdf.....")
 
