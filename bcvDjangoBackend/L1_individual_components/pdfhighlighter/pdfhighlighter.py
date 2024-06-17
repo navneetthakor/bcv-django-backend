@@ -5,6 +5,7 @@ import cloudinary.uploader
 import requests
 from cloudinary.utils import cloudinary_url
 import urllib.parse
+from django.conf import settings
 
 class PdfHighlighter:
   def __init__(self, pdf_path, ner_dict):
@@ -34,12 +35,15 @@ class PdfHighlighter:
             for inst in instance:
                 page.add_highlight_annot(inst)
 
- 
+      
+      STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
 
-
+      highligh_pdf_path = os.path.join(STATIC_ROOT_PATH, '/highlighted.pdf')
       # Save the modified PDF
-      doc.save("..highlighted.pdf")
+      doc.save(highligh_pdf_path)
       doc.close() 
+
+    ` return highligh_pdf_path
 
 
 
