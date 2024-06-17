@@ -12,7 +12,7 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         templateText = model.parseTemplatePdf()
 
         # ner for input pdf 
-        inputpdfNer = model.performNer(inputText)
+        inputPdfNer = model.performNer(inputText)
 
         # classify text 
         inputClassifiedText = model.classifyInputText()
@@ -22,13 +22,13 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         compare_dic = model.compareText(inputClassifiedText, templateClassifiedText)
 
         # highligh pdf 
-        highlitedPdf = model.highlightPdf(inputpdfNer)
+        highlitedPdf = model.highlightPdf(inputPdfNer)
 
         # summary of pdf 
-
+        summary = model.getSummary(inputPdfNer, inputText)
 
         # returning output
-        return {compare_dic, highlitedPdf}
+        return {compare_dic, highlitedPdf, summary}
 
     except Exception as err:
         print("error occured in main function")
