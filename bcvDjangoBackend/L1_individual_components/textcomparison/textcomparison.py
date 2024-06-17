@@ -15,7 +15,7 @@ class TextComparison:
     self.paragraphs_contract = paragraphs_contract
     self.dict = {}
    
-     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
+    genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
       # Create the model
       # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
