@@ -68,6 +68,7 @@ def contractify(request):
             clauses = data.get('clauses')
 
             # save pdfs 
+            print("input going to be saved\n\n\n\n")
             inputLocalUrl = download_pdf(inputUrl)
             templateLocalUrl = download_pdf(templateUrl)
 
@@ -90,20 +91,27 @@ def home(request):
 def download_pdf(public_id):
     try:
 
-        resource_type = 'raw'
+        # resource_type = 'raw'
 
         # Creating URL to make request on
-        signature = cloudinary_url(public_id, resource_type=resource_type)[0]
+        # signature = cloudinary_url(public_id, resource_type=resource_type)[0]
 
         # making request
-        response = requests.get(signature, stream=True)
+        # response = requests.get(signature, stream=True)
 
         # Fetching the name of the file
+        # parsed_url = urllib.parse.urlparse(public_id)
+        # filename = parsed_url.path.split("/")[-1]
+
+        response = requests.get(public_id, stream=True)
+
+        # Extract filename from URL
         parsed_url = urllib.parse.urlparse(public_id)
-        filename = parsed_url.path.split("/")[-1]
+        filename = os.path.basename(parsed_url.path)
         STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
         path = os.path.join(STATIC_ROOT_PATH, filename)
 
+        print("path is : ", path,"\n\n")
         if response.status_code == 200:
             # Storing the file locally
             with open(path , 'wb') as f:
