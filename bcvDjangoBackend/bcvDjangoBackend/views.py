@@ -16,9 +16,9 @@ from django.http import JsonResponse
 
 # The cloudinary credential
 cloudinary.config(
-    cloud_name='dzlv9zrk8',
-    api_key='689549637748837',
-    api_secret='8FaQn5CszbftFojnsUnPUN0Z7tM'
+    cloud_name='deziazvyp',
+    api_key='115335176222945',
+    api_secret='AJDclFmKfBgeaPqfQtbHqd8sgQ'
 )
 
 # ----------------------------------

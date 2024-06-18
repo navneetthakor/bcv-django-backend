@@ -1,7 +1,13 @@
-from pdfhighlighter import PdfHighlighter
+from pdfhighlighter.pdfhighlighter import PdfHighlighter
 
-# Instantiating an NER instance of  Ner class
-pdfHighlighterInstance = PdfHighlighter("pdfPath", "ner_entities")
+def main():
 
-# NER main function for making entity relations
-pdfHighlighterInstance.highlight()
+    # Instantiating an NER instance of  Ner class
+    pdfHighlighterInstance = PdfHighlighter("pdfPath", "ner_entities")
+
+    # NER main function for making entity relations
+    pdfHighlighterInstance.highlight()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,10 +1,16 @@
-from pdfparser import PdfParser
+from pdfparser.pdfparser import PdfParser
 
-# Instantiating  a pdfParser instance of PdfParser class
-pdfParserInstance = PdfParser("../../static/download.pdf")
+def main():
 
-# Read method to read the input pdf.
-pdf_text = pdfParserInstance.readPdf()
+    # Instantiating  a pdfParser instance of PdfParser class
+    pdfParserInstance = PdfParser("../../static/download.pdf")
 
-# Print method to print the text of pdf.
-pdfParserInstance.printPdf()
+    # Read method to read the input pdf.
+    pdf_text = pdfParserInstance.readPdf()
+
+    # Print method to print the text of pdf.
+    pdfParserInstance.printPdf()
+
+
+if __name__ == "__main__":
+    main()

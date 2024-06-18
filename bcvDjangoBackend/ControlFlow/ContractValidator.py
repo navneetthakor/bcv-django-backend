@@ -34,7 +34,8 @@ class ContractValidator:
     def performNer(self, plainText):
         try:
             ner = main.Ner(plainText)
-            nerText = ner.ner()
+            ner.ner()
+            nerText = ner.printNER()
             return nerText
         except Exception as err:
             print(f"Error occured while performing ner : {err}")

@@ -1,4 +1,9 @@
-from ContractValidator import ContractValidator
+import sys
+import os
+
+from ControlFlow.ContractValidator import ContractValidator
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../L1_individual_components/')))
 
 def validatContract(inputPdf, templatePdf,agreeType, clauses):
 
@@ -36,5 +41,6 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
 
 
 
-
+if __name__ == "__main__":
+    validatContract()
 

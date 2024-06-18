@@ -1,12 +1,17 @@
-from ner import Ner
+from ner.ner import Ner
 
-# Instantiating an NER instance of  Ner class
-nerInstance = Ner("hlo")
 
-# NER main function for making entity relations
-nerInstance.ner()
+def main():
 
-# NER method for printing the entities
-ner_dict = nerInstance.printNER()
+    # Instantiating an NER instance of  Ner class
+    nerInstance = Ner("hlo")
 
-print(ner_dict)
+    # NER main function for making entity relations
+    nerInstance.ner()
+
+    # NER method for printing the entities
+    ner_dict = nerInstance.printNER()
+    print(ner_dict)
+
+if __name__ == "__main__":
+    main()
