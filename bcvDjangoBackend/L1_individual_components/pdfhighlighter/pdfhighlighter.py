@@ -16,21 +16,21 @@ class PdfHighlighter:
   def highlight(self):
     # The cloudinary credential
     cloudinary.config(
-        cloud_name='dzlv9zrk8',
-        api_key='689549637748837',
-        api_secret='8FaQn5CszbftFojnsUnPUN0Z7tM'
+        cloud_name='deziazvyp',
+        api_key='115335176222945',
+        api_secret='AJDclFmKfBgeaPqfQtbHqd8sgQ'
     )
     try:
-      print("highlighting user pdf.....")
-
-      for val in self.ner_dict.keys():
-        self.list.append(val)
-
+      print("\n\n\nhighlighting user pdf.....\n")
+      
+      self.list = [key for key in self.ner_dict.keys()]
+      # print(self.list)
 
       doc = pymupdf.open(self.pdf_path)
+      print(doc,"\n\n\n")
 
       for page in doc:
-        for word in list:
+        for word in self.list:
             instance = page.search_for(word)
             for inst in instance:
                 page.add_highlight_annot(inst)
@@ -40,10 +40,11 @@ class PdfHighlighter:
 
       highligh_pdf_path = os.path.join(STATIC_ROOT_PATH, '/highlighted.pdf')
       # Save the modified PDF
+      print("path for highlight is : ", highligh_pdf_path,"\n\n\n")
       doc.save(highligh_pdf_path)
       doc.close() 
 
       return highligh_pdf_path
     
     except Exception as err:
-      print(f"Error occured while reading pdf : {err}")
+      print(f"Error occured while highlighting pdf : {err}")

@@ -19,6 +19,9 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         # ner for input pdf 
         inputPdfNer = model.performNer(inputText)
 
+        # highligh pdf 
+        highlitedPdf = model.highlightPdf(inputPdfNer)
+        
         # classify text 
         inputClassifiedText = model.classifyInputText()
         templateClassifiedText = model.classifyTemplateText()
@@ -26,8 +29,6 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         # compare classified text 
         compare_dic = model.compareText(inputClassifiedText, templateClassifiedText)
 
-        # highligh pdf 
-        highlitedPdf = model.highlightPdf(inputPdfNer)
 
         # summary of pdf 
         summary = model.getSummary(inputPdfNer, inputText)

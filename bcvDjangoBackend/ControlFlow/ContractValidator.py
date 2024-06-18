@@ -6,8 +6,9 @@ class ContractValidator:
         self.templatePdfUrl = templatePdfUrl
         self.agreeType = agreeType
     
-    def parsePdfHelper(pdfUrl):
+    def parsePdfHelper(self, pdfUrl):
         try:
+            print("pdfurl is : ", pdfUrl,"\n\n\n")
             pdfparser = main.PdfParser(pdfUrl)
             text = pdfparser.readPdf()
             return text

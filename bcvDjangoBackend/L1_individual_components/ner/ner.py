@@ -11,11 +11,13 @@ class Ner:
 
   def ner(self):
     try:
-      print("Starting NER Task.....")
+      print("Starting NER Task.....\n\n")
       self.output = self.query({
 	    "inputs": f"{self.text}"})
       
       print("NER performed successfully.")
+
+      # print("self.output was : ", self.output)
       
     except Exception as err:
       print(f"Error occurred while reading pdf : {err}")
@@ -27,6 +29,7 @@ class Ner:
     for dicts in self.output:
       ner_dict[dicts["word"]] = [dicts["entity_group"], dicts["score"]]
     
+    print(ner_dict)
     return ner_dict
 
       

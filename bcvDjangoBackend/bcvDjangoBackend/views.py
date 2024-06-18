@@ -117,7 +117,7 @@ def download_pdf(public_id):
             with open(path , 'wb') as f:
                 for chunk in response.iter_content(1024):
                     f.write(chunk)
-            return "succesfull"
+            return f"{path}"
 
     except requests.exceptions.HTTPError as errh:
         return  f"HTTP Error: {errh}"
