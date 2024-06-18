@@ -56,7 +56,7 @@ cloudinary.config(
 # so that all the classes in validatContract() can access that file 
 # -------------------
 
-
+@csrf_exempt
 def contractify(request):
     if request.method == 'POST':
         try:
