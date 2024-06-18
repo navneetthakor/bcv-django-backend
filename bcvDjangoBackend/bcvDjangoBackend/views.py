@@ -21,29 +21,41 @@ cloudinary.config(
     api_secret='8FaQn5CszbftFojnsUnPUN0Z7tM'
 )
 
-def pdf_highlighter(request):
-     if request.method == 'GET':
-        # Path to the local PDF file
-        file_path = "D:/Ronak/intel project/CUAD_v1/CUAD_v1/full_contract_pdf/Part_I/Affiliate_Agreements/CreditcardscomInc_20070810_S-1_EX-10.33_362297_EX-10.33_Affiliate Agreement.pdf"
+# ----------------------------------
+# I think this is done by @Ronak in highlighter class so I am marking it more removal 
+# ------------------------
 
-         # Fetching the filename
-        parsed_url = urllib.parse.urlparse(file_path)
-        filename = parsed_url.path.split("/")[-1]
+# def pdf_highlighter(request):
+#      if request.method == 'GET':
+#         # Path to the local PDF file
+#         file_path = "D:/Ronak/intel project/CUAD_v1/CUAD_v1/full_contract_pdf/Part_I/Affiliate_Agreements/CreditcardscomInc_20070810_S-1_EX-10.33_362297_EX-10.33_Affiliate Agreement.pdf"
 
-        try:
-            # Upload the file to Cloudinary with filename
-            result = cloudinary.uploader.upload(file_path, public_id = filename, resource_type="raw")
+#          # Fetching the filename
+#         parsed_url = urllib.parse.urlparse(file_path)
+#         filename = parsed_url.path.split("/")[-1]
 
-            # Get the URL of the uploaded file
-            temp_url = result['secure_url']
-            public_id, options = cloudinary_url(temp_url)
-            return_mess = download_pdf(public_id)
-            return HttpResponse(f"PDF file uploaded and publicly accessible at: <a href='{temp_url}'>{temp_url}</a><br>{return_mess}")
+#         try:
+#             # Upload the file to Cloudinary with filename
+#             result = cloudinary.uploader.upload(file_path, public_id = filename, resource_type="raw")
+
+#             # Get the URL of the uploaded file
+#             temp_url = result['secure_url']
+#             public_id, options = cloudinary_url(temp_url)
+#             return_mess = download_pdf(public_id)
+#             return HttpResponse(f"PDF file uploaded and publicly accessible at: <a href='{temp_url}'>{temp_url}</a><br>{return_mess}")
             
-        except Exception as e:
-            return HttpResponse(f"Failed to upload PDF file: {e}")
+#         except Exception as e:
+#             return HttpResponse(f"Failed to upload PDF file: {e}")
      
-     return HttpResponse("Send a GET request to upload the PDF file.")
+#      return HttpResponse("Send a GET request to upload the PDF file.")
+
+
+# -----------------
+# this is over main route, here I am assuming that 'download_pdf' route gives me
+# location of file on local machine, basically path of static folder 
+# so that all the classes in validatContract() can access that file 
+# -------------------
+
 
 def contractify(request):
     if request.method == 'POST':
@@ -56,18 +68,23 @@ def contractify(request):
             clauses = data.get('clauses')
 
             # save pdfs 
-            
-            
-            # Process the data (example)
-            response_data = validatContract()
+            inputLocalUrl = download_pdf(inputUrl)
+            templateLocalUrl = download_pdf(templateUrl)
+
+            # Process the data
+            response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
             
             return JsonResponse(response_data)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
+# -------------- 
+# route for testing 
+# ------------------
 def home(request):
-    return HttpResponse()
+    return HttpResponse('I am running')
 
 
 def download_pdf(public_id):
