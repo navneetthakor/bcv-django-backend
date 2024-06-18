@@ -1,4 +1,4 @@
-from textclassifier import TextClassifier
+# from textclassifier.textclassifier import TextClassifier
 import os
 import json
 import google.generativeai as genai
@@ -68,7 +68,7 @@ class TextComparison:
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
 
-   def comparator(self):
+    def comparator(self):
       template_headning = []
       contract_headning = []
       template_text = []
