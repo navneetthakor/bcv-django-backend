@@ -21,7 +21,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('' , views.home , name='home'),
-    path('pdf_highlighter/', views.pdf_highlighter , name='pdf_highlighter'),
-    path('pdf_summary/', views.pdf_summury , name='pdf_summary'),
+    # path('pdf_highlighter/', views.pdf_highlighter , name='pdf_highlighter'),
+    # path('pdf_summary/', views.pdf_summury , name='pdf_summary'),
 ]
 
