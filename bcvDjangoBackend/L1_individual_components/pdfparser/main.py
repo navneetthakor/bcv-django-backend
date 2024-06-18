@@ -1,4 +1,4 @@
-from pdfparser.pdfparser import PdfParser
+from pdfparser import PdfParser
 
 def main():
 

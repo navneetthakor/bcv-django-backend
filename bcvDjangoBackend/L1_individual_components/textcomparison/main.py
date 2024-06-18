@@ -1,5 +1,5 @@
-from textcomparison.textcomparison import TextComparison
-from textclassifier.textclassifier import TextClassifier
+from textcomparison import TextComparison
+from textclassifier import TextClassifier
 import os
 import json
 import google.generativeai as genai

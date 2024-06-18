@@ -1,4 +1,4 @@
-from textclassifier.textclassifier import TextClassifier
+from textclassifier import TextClassifier
 import pdfplumber
 import json
 from pdfminer.high_level import extract_pages

@@ -1,4 +1,4 @@
-from ner.ner import Ner
+from ner import Ner
 
 
 def main():

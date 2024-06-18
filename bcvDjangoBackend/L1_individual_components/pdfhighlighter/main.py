@@ -1,4 +1,4 @@
-from pdfhighlighter.pdfhighlighter import PdfHighlighter
+from pdfhighlighter import PdfHighlighter
 
 def main():
 
