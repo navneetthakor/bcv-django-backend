@@ -14,8 +14,8 @@ import google.generativeai as genai
 class Summary :
     
   def __init__(self):
-    os.environ["GOOGLE_API_KEY"] = 'AIzaSyD6BBJzZsKNJQaCd7yr6r-IIfpIkKaQ0kg'
-    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+    # os.environ["GOOGLE_API_KEY"] = 'AIzaSyD6BBJzZsKNJQaCd7yr6r-IIfpIkKaQ0kg'
+    genai.configure(api_key= "AIzaSyD6BBJzZsKNJQaCd7yr6r-IIfpIkKaQ0kg")
 
     # Create the model
     generation_config = {
@@ -44,6 +44,7 @@ class Summary :
         "output: ",
       ])
 
+      print(response.text)
       return response.text
     except Exception as err:
       print(err)
