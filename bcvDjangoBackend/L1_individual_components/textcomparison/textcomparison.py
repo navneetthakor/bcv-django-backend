@@ -84,7 +84,7 @@ class TextComparison:
    
       for heading, paragraph in self.paragraphs_contract.items():
         if heading in template_headning :
-          result = comparisonInstance.individual_comparator(template_text[count] , paragraph )
+          result = self.individual_comparator(template_text[count] , paragraph )
           dict[heading] = result
         count = count + 1
 
