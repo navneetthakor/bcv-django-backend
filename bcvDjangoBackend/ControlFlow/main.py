@@ -18,6 +18,9 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
 
         # ner for input pdf 
         inputPdfNer = model.performNer(inputText)
+        hashable_ner_dict = tuple(sorted(inputPdfNer.items()))
+
+
 
         # highligh pdf 
         highlitedPdf = model.highlightPdf(inputPdfNer)
@@ -34,7 +37,13 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         summary = model.getSummary(inputPdfNer, inputText)
 
         # returning output
-        return {compare_dic, highlitedPdf, summary}
+        return {
+            "compare_dic": compare_dic,
+            "highlitedPdf": highlitedPdf,
+            "summary": summary,
+            "hashable_ner_dict": hashable_ner_dict
+        }
+
 
     except Exception as err:
         print("error occured in main function")
