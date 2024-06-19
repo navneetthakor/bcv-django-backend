@@ -76,6 +76,9 @@ def contractify(request):
             # Process the data
             response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
 
+            response_data = {'key': list(response_data)}
+
+
             #TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
             #this was the error hence addition of safe = False
             
