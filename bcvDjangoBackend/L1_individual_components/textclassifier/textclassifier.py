@@ -1,5 +1,5 @@
 from pdfminer.high_level import extract_text, extract_pages
-import re
+import json
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTTextLine, LTChar
 
@@ -64,18 +64,18 @@ class TextClassifier:
       heading = []
 
       for i in data:
-        if i['agreeType'] == self.ContractType :
+        if i['agreeType'] == self.type :
           for clause in i['clauses']:
             heading.append(clause)
 
       if type in type1 :
-        self.paragraphs = Type1_classify(self.pdfPath, heading)
+        self.paragraphs = self.Type1_classify(self.pdfPath, heading)
       else :
-        self.paragraphs = type2_classify(self.pdfPath, heading)
+        self.paragraphs = self.type2_classify(self.pdfPath, heading)
         
         
       print("dummy text classifier method")
-      return paragraphs
+      return self.paragraphs
     except Exception as err:
       print(f"Error occured while classifying text : {err}")
 
