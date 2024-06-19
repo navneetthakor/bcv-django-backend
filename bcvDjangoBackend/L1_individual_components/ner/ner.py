@@ -30,6 +30,7 @@ class Ner:
       ner_dict[dicts["word"]] = [dicts["entity_group"], dicts["score"]]
     
     print(ner_dict)
+    hashable_ner_dict = tuple(ner_dict.items())
     return ner_dict
 
       
