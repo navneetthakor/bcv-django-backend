@@ -24,7 +24,7 @@ class TextComparison:
       "response_mime_type": "text/plain",
       }
       
-    model = genai.GenerativeModel(
+    self.model = genai.GenerativeModel(
       model_name="gemini-1.5-flash",
       generation_config=generation_config,
         # safety_settings = Adjust safety settings
@@ -51,7 +51,7 @@ class TextComparison:
         self.pairs.append(pair)
     
 
-  def individual_comparator(template_text , contract_text):
+  def individual_comparator(self , template_text , contract_text):
     try:
       # Concatenate all input-output pairs into a single string
       combined_input = ""
@@ -69,27 +69,27 @@ class TextComparison:
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
 
-    def comparator(self):
-      template_headning = []
-      contract_headning = []
-      template_text = []
-      contract_text = []
+  def comparator(self):
+    template_headning = []
+    contract_headning = []
+    template_text = []
+    contract_text = []
 
-      # NER main function for making entity relations
+    # NER main function for making entity relations
 
-      for heading, paragraph in self.paragraphs_template.items():
-          template_headning.append(heading)
-          template_headning.append(heading)
+    for heading, paragraph in self.paragraphs_template.items():
+        template_headning.append(heading)
+        template_text.append(paragraph)
   
-      count = 0
+    count = 0
    
-      for heading, paragraph in self.paragraphs_contract.items():
-        if heading in template_headning :
-          result = comparisonInstance.individual_comparator(template_text[count] , paragraph )
-          dict[heading] = result
-        count = count + 1
+    for heading, paragraph in self.paragraphs_contract.items():
+      if heading in template_headning :
+        result = self.individual_comparator(template_text[count] , paragraph )
+        self.dict[heading] = result
+      count = count + 1
 
-      return self.dict
+    return self.dict
       
 
   def printComparison(self):
