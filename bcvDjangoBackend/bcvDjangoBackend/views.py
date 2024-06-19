@@ -71,6 +71,7 @@ def contractify(request):
             print("input going to be saved\n\n\n\n")
             inputLocalUrl = download_pdf(inputUrl)
             templateLocalUrl = download_pdf(templateUrl)
+            print("done done")
 
             # Process the data
             response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
@@ -108,8 +109,9 @@ def download_pdf(public_id):
         # Extract filename from URL
         parsed_url = urllib.parse.urlparse(public_id)
         filename = os.path.basename(parsed_url.path)
-        STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
-        path = os.path.join(STATIC_ROOT_PATH, filename)
+        # STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
+        # path = os.path.join(STATIC_ROOT_PATH, filename)
+        path = r'D:\\1\\Projects\\intel\\Intel project\\bcv-django-backend\\bcvDjangoBackend\\bcvDjangoBackend\\static\\' + filename
 
         print("path is : ", path,"\n\n")
         if response.status_code == 200:
