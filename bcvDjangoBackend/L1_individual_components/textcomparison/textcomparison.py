@@ -10,6 +10,7 @@ class TextComparison:
     self.paragraphs_template = paragraphs_template
     self.paragraphs_contract = paragraphs_contract
     self.dict = {}
+    self.model = None
    
     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
 
@@ -23,7 +24,7 @@ class TextComparison:
       "response_mime_type": "text/plain",
       }
       
-    self.model = genai.GenerativeModel(
+    model = genai.GenerativeModel(
       model_name="gemini-1.5-flash",
       generation_config=generation_config,
         # safety_settings = Adjust safety settings
@@ -34,7 +35,7 @@ class TextComparison:
     temp = []
       
     # Load the JSON file
-    with open('pairs.json', 'r') as f:
+    with open('./L1_individual_components/textcomparison/pairs.json', 'r') as f:
         temp = json.load(f)
   
     # Loop through each entry in the JSON data and add pairs
@@ -50,7 +51,7 @@ class TextComparison:
         self.pairs.append(pair)
     
 
-  def individual_comparator(self,template_text , contract_text):
+  def individual_comparator(template_text , contract_text):
     try:
       # Concatenate all input-output pairs into a single string
       combined_input = ""
@@ -68,7 +69,7 @@ class TextComparison:
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
 
-  def comparator(self):
+    def comparator(self):
       template_headning = []
       contract_headning = []
       template_text = []
@@ -84,7 +85,7 @@ class TextComparison:
    
       for heading, paragraph in self.paragraphs_contract.items():
         if heading in template_headning :
-          result = self.individual_comparator(template_text[count] , paragraph )
+          result = comparisonInstance.individual_comparator(template_text[count] , paragraph )
           dict[heading] = result
         count = count + 1
 
