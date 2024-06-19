@@ -75,8 +75,11 @@ def contractify(request):
 
             # Process the data
             response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
+
+            #TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+            #this was the error hence addition of safe = False
             
-            return JsonResponse(response_data)
+            return JsonResponse(response_data , safe = False)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
@@ -111,7 +114,7 @@ def download_pdf(public_id):
         filename = os.path.basename(parsed_url.path)
         # STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
         # path = os.path.join(STATIC_ROOT_PATH, filename)
-        path = r'D:\\1\\Projects\\intel\\Intel project\\bcv-django-backend\\bcvDjangoBackend\\bcvDjangoBackend\\static\\' + filename
+        path = r'D:\\Ronak\\bcv_django_back_end\\bcv-django-backend\\bcvDjangoBackend\\bcvDjangoBackend\\static\\' + filename
 
         print("path is : ", path,"\n\n")
         if response.status_code == 200:
@@ -129,5 +132,3 @@ def download_pdf(public_id):
         return  f"Timeout Error: {errt}"
     except requests.exceptions.RequestException as err:
         return  f"Something went wrong: {err}"
-
-
