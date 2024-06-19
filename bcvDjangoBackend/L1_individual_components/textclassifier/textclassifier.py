@@ -9,10 +9,10 @@ class TextClassifier:
   
   def __init__(self, pdfPath , ContractType):
     self.pdfPath = pdfPath
-    self.type = ContractType
     self.paragraphs = None
+    self.ContractType = ContractType
 
-  def Type1_classify(pdf_path, headings):
+  def Type1_classify(self , pdf_path, headings):
     # Extract text from the PDF
     text = extract_text(pdf_path)
     lines = text.split('\n')
@@ -32,7 +32,7 @@ class TextClassifier:
 
     return paragraphs
 
-  def Type2_classify(pdf_path, headings):
+  def Type2_classify(self , pdf_path, headings):
     paragraphs = {}
     current_heading = None
 
@@ -60,12 +60,12 @@ class TextClassifier:
       type1 = ['Beta Test AgreeMent' , 'Influencer Agreement',]
       type2 = ['Default' , 'Franchise Agreement' , 'Joint Venture Agreement' , 'License Agreement']
 
-      for files in os.listdir('./L1_individual_components/textclassifier'):
-         print(files)
-
       # just to find the path
-      # with open('./L1_individual_components/textclassifier/templates.json') as f:
-      #   data = json.load(f)
+      # for files in os.listdir('./L1_individual_components/textclassifier'):
+      #    print(files)
+
+      with open('./L1_individual_components/textclassifier/templates.json') as f:
+        data = json.load(f)
 
       heading = []
       for i in data:
@@ -73,14 +73,14 @@ class TextClassifier:
           for clause in i['clauses']:
             heading.append(clause)
 
-      if type in type1 :
-        self.paragraphs = Type1_classify(self.pdfPath, heading)
+      if self.ContractType in type1 :
+        self.paragraphs = self.Type1_classify(self.pdfPath, heading)
       else :
-        self.paragraphs = Type2_classify(self.pdfPath, heading)
+        self.paragraphs = self.Type2_classify(self.pdfPath, heading)
         
         
       print("dummy text classifier method")
-      return paragraphs
+      return self.paragraphs
     except Exception as err:
       print(f"Error occured while classifying text : {err}")
 
