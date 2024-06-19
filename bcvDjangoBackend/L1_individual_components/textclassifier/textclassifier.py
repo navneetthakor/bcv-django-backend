@@ -1,90 +1,114 @@
-from pdfminer.high_level import extract_text
-import re
-import json
-from pdfminer.high_level import extract_pages
-from pdfminer.layout import LTTextContainer, LTTextLine, LTChar
+# from textclassifier.textclassifier import TextClassifier
 import os
+import json
+import google.generativeai as genai
 
-class TextClassifier:
+class TextComparison:   
+        
+  def __init__(self , paragraphs_template ,paragraphs_contract):
+    self.pairs = []
+    self.paragraphs_template = paragraphs_template
+    self.paragraphs_contract = paragraphs_contract
+    self.dict = ()
+    self.model = None
+   
+    genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
+
+      # Create the model
+      # See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
+    generation_config = {
+      "temperature": 1,
+      "top_p": 0.95,
+      "top_k": 64,
+      "max_output_tokens": 8192,
+      "response_mime_type": "text/plain",
+      }
+      
+    self.model = genai.GenerativeModel(
+      model_name="gemini-1.5-flash",
+      generation_config=generation_config,
+        # safety_settings = Adjust safety settings
+        # See https://ai.google.dev/gemini-api/docs/safety-settings
+    )
+
+    # List to store pairs
+    temp = []
+      
+    # Load the JSON file
+    with open('./L1_individual_components/textcomparison/pairs.json', 'r') as f:
+        temp = json.load(f)
   
-  def __init__(self, pdfPath , ContractType):
-    self.pdfPath = pdfPath
-    self.paragraphs = None
-    self.ContractType = ContractType
+    # Loop through each entry in the JSON data and add pairs
+    for entry in temp:
+        template_text = entry["template_text"]
+        contract_text = entry["contract_text"]
+        output = entry["output"]
+        pair = {
+          "template_text": template_text,
+          "contract_text": contract_text,
+          "output": output
+        }
+        self.pairs.append(pair)
+    
 
-  def Type1_classify(self , pdf_path, headings):
-    # Extract text from the PDF
-    text = extract_text(pdf_path)
-    lines = text.split('\n')
-
-    paragraphs = {}
-    current_heading = None
-
-    for line in lines:
-        stripped_line = line.strip()
-
-        # Check if the line is an exact match for any heading
-        if stripped_line in headings:
-            current_heading = stripped_line
-            paragraphs[current_heading] = ""
-        elif current_heading:
-            paragraphs[current_heading] += line + "\n"
-
-    return paragraphs
-
-  def Type2_classify(self , pdf_path, headings):
-    paragraphs = {}
-    current_heading = None
-
-    for page_layout in extract_pages(pdf_path):
-        for element in page_layout:
-            if isinstance(element, LTTextContainer):
-                for text_line in element:
-                    if isinstance(text_line, LTTextLine):
-                        line_text = text_line.get_text().strip()
-
-                        # Check if the line starts with any heading and is bold
-                        if any(line_text.startswith(heading) for heading in headings):
-                            bold = any(isinstance(char, LTChar) and 'Bold' in char.fontname for char in text_line)
-                            if bold:
-                                current_heading = next(heading for heading in headings if line_text.startswith(heading))
-                                paragraphs[current_heading] = ""
-
-                        if current_heading:
-                            paragraphs[current_heading] += line_text + "\n"
-
-    return paragraphs
-
-  def classify(self):
+  def individual_comparator(self , template_text , contract_text):
     try:
-      type1 = ['Beta Test AgreeMent' , 'Influencer Agreement',]
-      type2 = ['Default' , 'Franchise Agreement' , 'Joint Venture Agreement' , 'License Agreement']
-
-      # just to find the path
-      # for files in os.listdir('./L1_individual_components/textclassifier'):
-      #    print(files)
-
-      with open('./L1_individual_components/textclassifier/templates.json') as f:
-        data = json.load(f)
-
-      heading = []
-      for i in data:
-        if i['agreeType'] == self.ContractType :
-          for clause in i['clauses']:
-            heading.append(clause)
-
-      if self.ContractType in type1 :
-        self.paragraphs = self.Type1_classify(self.pdfPath, heading)
-      else :
-        self.paragraphs = self.Type2_classify(self.pdfPath, heading)
-        
-        
-      print("dummy text classifier method")
-      return self.paragraphs
+      # Concatenate all input-output pairs into a single string
+      combined_input = ""
+      for pair in self.pairs[:-1]:
+          combined_input += f"input: \"template text\" : \"{pair['template_text']}\"\n\n\"contract text\" : \"{pair['contract_text']}\"\n\nquery : find the difference in contract text in the context of the template text\nand provide it in brief\noutput: {pair['output']}\n\n"
+      
+      combined_input += f"input: \"template text\" : \"{template_text}\"\n\n\"contract text\" : \"{contract_text}\"\n\nquery : find the difference in contract text in the context of the template text\nand provide it in brief"
+      
+      # Generate content for the last pair using the combined input
+      result = self.model.generate_content([combined_input])
+      
+      
+      print("dummy comparator method")
+      # print(result.text)
+      return result.text
     except Exception as err:
-      print(f"Error occured while classifying text : {err}")
+      print(f"Error occured while comparing pdf : {err}")
 
-  def printClassify(self):
-    print("dummy classify print method")
-    for heading, paragraph in self.paragraphs.items():
-      print(f"{heading}:\n{paragraph}\n\n")
+  def comparator(self):
+    template_headning = []
+    contract_headning = []
+    template_text = []
+    contract_text = []
+    dict_heading = []
+    dict_text = []
+
+    # NER main function for making entity relations
+
+    for heading, paragraph in self.paragraphs_template.items():
+        template_headning.append(heading)
+        template_text.append(paragraph)
+  
+    count = 0
+   
+    for heading, paragraph in self.paragraphs_contract.items():
+      if heading in template_headning :
+        result = self.individual_comparator(template_text[count] , paragraph )
+        # print(result , "\n\n\n\n\n\n")
+        dict_heading.append(heading)
+        dict_text.append(result)
+        # self.dict[heading] = result
+        # print(template_text[count] , "\n\n\n\n\n\n" , paragraph  , "\n\n\n\n\n\n")
+      count = count + 1
+
+    #directly adding key-pair value to dictinary was not working , so alternative approach of using list then converting it into the dict
+
+    temp_dict = dict(zip(dict_heading, dict_text))
+    for key, value in temp_dict.items():
+      print(f"Key: {key}, Value: {value}")
+
+    # and the dict was not hashable which was require by the control flow contractvalidatior.py file function , hence changed the dict to tuple which is hashable
+    self.dict = tuple(temp_dict.items())
+
+    return self.dict
+      
+
+  def printComparison(self):
+    print("dummy comparator print method")
+    for in_data in self.dict:
+       print(in_data)
