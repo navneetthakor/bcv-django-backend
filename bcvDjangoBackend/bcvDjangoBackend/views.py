@@ -76,11 +76,14 @@ def contractify(request):
             # Process the data
             response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
 
+            print(response_data)
 
             #TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
             #this was the error hence addition of safe = False
             
-            return JsonResponse(response_data , safe = False)
+            response_data = list(response_data)
+            return JsonResponse(response_data, safe=False)
+
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
