@@ -1,5 +1,7 @@
 from pdfminer.high_level import extract_text, extract_pages
 import re
+from pdfminer.high_level import extract_pages
+from pdfminer.layout import LTTextContainer, LTTextLine, LTChar
 
 class TextClassifier:
   
