@@ -9,7 +9,7 @@ class TextComparison:
     self.pairs = []
     self.paragraphs_template = paragraphs_template
     self.paragraphs_contract = paragraphs_contract
-    self.dict = {}
+    self.dict = ()
     self.model = None
    
     genai.configure(api_key="AIzaSyABsR-Bcf2G2jnuwMIhGB0E2L-AlQkUdVE")
@@ -65,6 +65,7 @@ class TextComparison:
       
       
       print("dummy comparator method")
+      # print(result.text)
       return result.text
     except Exception as err:
       print(f"Error occured while comparing pdf : {err}")
@@ -74,6 +75,8 @@ class TextComparison:
     contract_headning = []
     template_text = []
     contract_text = []
+    dict_heading = []
+    dict_text = []
 
     # NER main function for making entity relations
 
@@ -86,12 +89,26 @@ class TextComparison:
     for heading, paragraph in self.paragraphs_contract.items():
       if heading in template_headning :
         result = self.individual_comparator(template_text[count] , paragraph )
-        self.dict[heading] = result
+        # print(result , "\n\n\n\n\n\n")
+        dict_heading.append(heading)
+        dict_text.append(result)
+        # self.dict[heading] = result
+        # print(template_text[count] , "\n\n\n\n\n\n" , paragraph  , "\n\n\n\n\n\n")
       count = count + 1
+
+    #directly adding key-pair value to dictinary was not working , so alternative approach of using list then converting it into the dict
+
+    temp_dict = dict(zip(dict_heading, dict_text))
+    for key, value in temp_dict.items():
+      print(f"Key: {key}, Value: {value}")
+
+    # and the dict was not hashable which was require by the control flow contractvalidatior.py file function , hence changed the dict to tuple which is hashable
+    self.dict = tuple(temp_dict.items())
 
     return self.dict
       
 
   def printComparison(self):
     print("dummy comparator print method")
-    print(self.dict)
+    for in_data in self.dict:
+       print(in_data)
