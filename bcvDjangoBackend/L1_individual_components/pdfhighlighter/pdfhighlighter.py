@@ -50,6 +50,8 @@ class PdfHighlighter:
             public_id , options = cloudinary_url(temp_url)
             print(public_id)
 
+            os.remove(highligh_pdf_path)
+
             return public_id
 
         except Exception as err:
