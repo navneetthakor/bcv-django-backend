@@ -20,7 +20,8 @@ def main():
 
     dict = comparisonInstance.comparator()
   
-
+    print(dict)
+    
     # NER method for printing the entities
     comparisonInstance.printComparison()
 
