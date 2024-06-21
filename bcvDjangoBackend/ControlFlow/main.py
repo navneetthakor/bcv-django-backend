@@ -36,6 +36,9 @@ def validatContract(inputPdf, templatePdf,agreeType, clauses):
         inputClassifiedText = model.classifyInputText()
         templateClassifiedText = model.classifyTemplateText()
 
+        print("inputclassifiedtext:\n", inputClassifiedText,'\n\n\n')
+        print("tempclassifiedtext:\n", templateClassifiedText,'\n\n\n')
+
         print("Finding deviations :\n")
         # compare classified text 
         compare_dic = model.compareText(inputClassifiedText, templateClassifiedText)
