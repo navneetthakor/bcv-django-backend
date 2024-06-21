@@ -29,7 +29,7 @@ class PdfHighlighter:
 
             # STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
 
-            highligh_pdf_path = os.path.join('./', 'highlighted.pdf')
+            highligh_pdf_path = os.path.join('./static/', 'highlighted.pdf')
             # Save the modified PDF
             print("path for highlight is : ", highligh_pdf_path,"\n\n\n")
 
@@ -38,22 +38,32 @@ class PdfHighlighter:
 
             # Upload the file to Cloudinary with filename
             cloudinary.config(
-                cloud_name='dzlv9zrk8',
-                api_key='689549637748837',
-                api_secret='8FaQn5CszbftFojnsUnPUN0Z7tM'
+                cloud_name='deziazvyp',
+                api_key='115335176222945',
+                api_secret='-AJDclFmKfBgeaPqfQtbHqd8sgQ'
             )
 
             result = cloudinary.uploader.upload(highligh_pdf_path, public_id='highlighted.pdf', resource_type="raw")
-
+            print("\n\nResuult is from cloudinary : ", result,"\n\n\n")
             # Get the URL of the uploaded file
-            temp_url = result['secure_url']
-            public_id , options = cloudinary_url(temp_url)
+            temp_url = result.get('secure_url')
+            if not temp_url:
+              raise Exception("Failed to upload file to Cloudinary")
+
+            public_id = result.get('public_id')
+            if not public_id:
+              raise Exception("Failed to retrieve public ID")
+
             print(public_id)
 
-            os.remove(highligh_pdf_path)
+            # Remove the local file
+            if os.path.exists(highligh_pdf_path):
+              os.remove(highligh_pdf_path)
+            else:
+              raise Exception(f"The file {highligh_pdf_path} does not exist")
 
-            return public_id
+            return temp_url
 
         except Exception as err:
-            print(f"Error occurred while highlighting pdf : {err}")
+          print(f"Error occurred while highlighting pdf : {err}")
 

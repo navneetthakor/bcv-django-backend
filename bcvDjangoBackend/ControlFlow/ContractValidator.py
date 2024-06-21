@@ -79,8 +79,8 @@ class ContractValidator:
     def highlightPdf(self,ner_dict):
         try:
             pdfHigltr = main.PdfHighlighter(self.inputPdfUrl, ner_dict)
-            pdfHigltr.highlight()
-            return 'success'
+            public_id = pdfHigltr.highlight()
+            return public_id
         except Exception as err:
             print(f"Error occured while highlighting pdf : {err}")
             raise Exception(f"Error occured while highlighting pdf : {err}")
