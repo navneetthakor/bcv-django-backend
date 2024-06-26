@@ -5,12 +5,12 @@ from ControlFlow.ContractValidator import ContractValidator
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../L1_individual_components/')))
 
-def validatContract(inputPdf, templatePdf,agreeType, clauses):
+def validatContract(inputPdf, templatePdf,agreeType, clasue , heading):
 
     try:
 
         # creating model 
-        model = ContractValidator(inputPdf, templatePdf, agreeType)
+        model = ContractValidator(inputPdf, templatePdf, agreeType , clasue , heading)
 
         # parsing pdfs 
         print("Parsing pdf :\n")
