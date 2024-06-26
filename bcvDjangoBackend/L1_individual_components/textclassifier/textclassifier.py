@@ -10,10 +10,11 @@ import re
 
 class TextClassifier:
   
-  def __init__(self, pdfPath , ContractType):
+  def __init__(self, pdfPath , ContractType , heading):
     self.pdfPath = pdfPath
     self.paragraphs = None
     self.ContractType = ContractType
+    self.heading = heading
 
   def levenshtein_sim(self , head, headings):
     similarity_list = []
@@ -68,17 +69,7 @@ class TextClassifier:
 
   def classify(self):
     try:
-
-      with open('./L1_individual_components/textclassifier/templates.json') as f:
-        data = json.load(f)
-
-      heading = []
-      for i in data:
-        if i['agreeType'] == self.ContractType :
-          for clause in i['clauses']:
-            heading.append(clause)     
-
-      self.paragraphs = self.extract_paragraphs(self.pdfPath, heading)
+      self.paragraphs = self.extract_paragraphs(self.pdfPath, self.heading)
 
       print(self.paragraphs)
         
