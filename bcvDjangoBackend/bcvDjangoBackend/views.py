@@ -7,6 +7,7 @@ import requests
 from cloudinary.utils import cloudinary_url
 import urllib.parse
 from django.conf import settings
+from L1_individual_components.textclassifier.heading_classify import classify
 
 # for contractify route 
 from ControlFlow.main import validatContract
@@ -73,8 +74,10 @@ def contractify(request):
             templateLocalUrl = download_pdf(templateUrl)
             print("done done")
 
+            headings = classify(templateLocalUrl)
+            
             # Process the data
-            response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses)
+            response_data = validatContract(inputLocalUrl, templateLocalUrl, agreeType, clauses , headings)
 
             print(response_data)
 
