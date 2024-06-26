@@ -4,6 +4,9 @@ import json
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTTextLine, LTChar
 import os
+import Levenshtein
+import re
+
 
 class TextClassifier:
   
@@ -12,27 +15,34 @@ class TextClassifier:
     self.paragraphs = None
     self.ContractType = ContractType
 
-  def Type1_classify(self , pdf_path, headings):
-    # Extract text from the PDF
-    text = extract_text(pdf_path)
-    lines = text.split('\n')
+  def levenshtein_sim(self , head, headings):
+    similarity_list = []
+    for heading_name in headings:
+        heading_name = heading_name.lower()
+        compare_string  = head[:len(heading_name)]
+        # print(compare_string)
+        distance = Levenshtein.distance(compare_string, heading_name)
+        max_len = max(len(compare_string), len(heading_name))
+        similarity = 1 - (distance / max_len)
+        # similarity_list.append(similarity)
+        if(similarity > 0.9):
+          return len(heading_name)
+    return 0
+  
+  def clean_text(self , text):
+    # Convert text to lowercase
+    text = text.lower()
 
-    paragraphs = {}
-    current_heading = None
+    # Remove punctuation except for numbers, percentage sign, and slash in dates
+    text = re.sub(r'[^\w\s%\/]', '', text)
+    text = re.sub(r'\d+', '', text)
 
-    for line in lines:
-        stripped_line = line.strip()
+    # Remove extra whitespace
+    text = ' '.join(text.split())
 
-        # Check if the line is an exact match for any heading
-        if stripped_line in headings:
-            current_heading = stripped_line
-            paragraphs[current_heading] = ""
-        elif current_heading:
-            paragraphs[current_heading] += line + "\n"
-
-    return paragraphs
-
-  def Type2_classify(self , pdf_path, headings):
+    return text
+  
+  def extract_paragraphs(self,pdf_path, headings):
     paragraphs = {}
     current_heading = None
 
@@ -41,13 +51,14 @@ class TextClassifier:
             if isinstance(element, LTTextContainer):
                 for text_line in element:
                     if isinstance(text_line, LTTextLine):
-                        line_text = text_line.get_text().strip()
-
-                        # Check if the line starts with any heading and is bold
-                        if any(line_text.startswith(heading) for heading in headings):
+                        line_text = text_line.get_text().strip()                    
+                        cleaned_line_text = self.clean_text(line_text)
+                        length = self.levenshtein_sim(cleaned_line_text, headings)
+                        if(length > 0):
                             bold = any(isinstance(char, LTChar) and 'Bold' in char.fontname for char in text_line)
-                            if bold:
-                                current_heading = next(heading for heading in headings if line_text.startswith(heading))
+
+                            if bold:                                
+                                current_heading = line_text[:length]
                                 paragraphs[current_heading] = ""
 
                         if current_heading:
@@ -57,12 +68,6 @@ class TextClassifier:
 
   def classify(self):
     try:
-      type1 = ['Beta Test AgreeMent' , 'Influencer Agreement',]
-      type2 = ['Default' , 'Franchise Agreement' , 'Joint Venture Agreement' , 'License Agreement']
-
-      # just to find the path
-      # for files in os.listdir('./L1_individual_components/textclassifier'):
-      #    print(files)
 
       with open('./L1_individual_components/textclassifier/templates.json') as f:
         data = json.load(f)
@@ -71,15 +76,11 @@ class TextClassifier:
       for i in data:
         if i['agreeType'] == self.ContractType :
           for clause in i['clauses']:
-            heading.append(clause)  
+            heading.append(clause)     
 
-      if self.ContractType in type1 :
-        self.paragraphs = self.Type1_classify(self.pdfPath, heading)
-      else :
-        self.paragraphs = self.Type2_classify(self.pdfPath, heading)
+      self.paragraphs = self.extract_paragraphs(self.pdfPath, heading)
 
-        # print(self.paragraphs)
-        
+      print(self.paragraphs)
         
       print("dummy text classifier method")
       return self.paragraphs
