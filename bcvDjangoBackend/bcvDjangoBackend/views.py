@@ -119,7 +119,7 @@ def download_pdf(public_id):
         filename = os.path.basename(parsed_url.path)
         # STATIC_ROOT_PATH = os.path.join(settings.BASE_DIR, settings.STATIC_ROOT)
         # path = os.path.join(STATIC_ROOT_PATH, filename)
-        path = r'D:\\Intel Unnati Programme\\BCV-DJANGO\\bcv-django-backend\\bcvDjangoBackend\\static' + filename
+        path = r'./bcvDjangoBackend/static/' + filename 
 
         print("path is : ", path,"\n\n")
         if response.status_code == 200:
