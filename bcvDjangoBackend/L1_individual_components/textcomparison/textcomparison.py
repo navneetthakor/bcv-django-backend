@@ -71,30 +71,17 @@ class TextComparison:
       print(f"Error occured while comparing pdf : {err}")
 
   def comparator(self):
-    template_headning = []
-    contract_headning = []
-    template_text = []
-    contract_text = []
     dict_heading = []
     dict_text = []
 
-    # NER main function for making entity relations
-
-    for heading, paragraph in self.paragraphs_template.items():
-        template_headning.append(heading)
-        template_text.append(paragraph)
-  
-    count = 0
-   
     for heading, paragraph in self.paragraphs_contract.items():
-      if heading in template_headning :
-        result = self.individual_comparator(template_text[count] , paragraph )
-        # print(result , "\n\n\n\n\n\n")
-        dict_heading.append(heading)
-        dict_text.append(result)
-        # self.dict[heading] = result
-        # print(template_text[count] , "\n\n\n\n\n\n" , paragraph  , "\n\n\n\n\n\n")
-      count = count + 1
+       if heading in self.paragraphs_template:
+          result = self.individual_comparator(self.paragraphs_template[heading] , paragraph )
+          dict_heading.append(heading)
+          dict_text.append(result)
+       else :
+          print("heading is missing \n The heading is not present in the provided template or old contract\n\n")
+          
 
     #directly adding key-pair value to dictinary was not working , so alternative approach of using list then converting it into the dict
 
