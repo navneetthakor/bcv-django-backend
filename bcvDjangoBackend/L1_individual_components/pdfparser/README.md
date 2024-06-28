@@ -19,7 +19,7 @@ $ pip install -r requirements.txt
 
 - Run the main.py file :
 ```bash
-$ py main.py
+$ python main.py
 ```
 
 ### To view the working of the component, execute apppdfparser.py file
