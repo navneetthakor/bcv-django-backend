@@ -1,6 +1,6 @@
-# Pdf-Parser : It parses the pdf and extracts the textual information from it.
+## Pdf-Parser : It parses the pdf and extracts the textual information from it.
 
-## Install the dependencies in a virtual environment and execute main.py file.
+### Install the dependencies in a virtual environment and execute main.py file.
 
 - Creating virtual environment :
 ```bash
@@ -13,16 +13,16 @@ $ .venv/Scripts/activate
 ```
 
 - Install required modules from requirements.txt file :
-'''bash
+```bash
 $ pip install -r requirements.txt
-'''
+```
 
 - Run the main.py file :
 ```bash
 $ py main.py
 ```
 
-## To view the working of the component, execute apppdfparser.py file
+### To view the working of the component, execute apppdfparser.py file
 
 - Install streamlit :
 ```bash
