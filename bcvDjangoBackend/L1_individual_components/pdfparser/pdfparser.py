@@ -10,7 +10,7 @@ class PdfParser:
       pdf = pymupdf.open(self.pdfPath)
       for page in pdf:
         self.text += page.get_text()
-        self.text += "\n-------------------------------------\n\n"
+        self.text += "\n\n"
       return self.text
     except Exception as err:
       print(f"Error occured while reading pdf : {err}")
