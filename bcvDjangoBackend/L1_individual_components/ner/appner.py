@@ -16,6 +16,16 @@ def extract_text(pdf):
         return text
     return ""
 
+def display_entities(entities_dict):
+    st.write("Entities recognized:")
+    for entity, details in entities_dict.items():
+        entity_type = details[0]
+        confidence = details[1]
+        if entity_type != 'CARDINAL':
+            st.write(f"**Entity:** {entity}")
+            st.write(f"- **Type:** {entity_type}")
+            st.write(f"- **Confidence:** {confidence}")
+
 def main():
     st.write("DEMO Name Entitiy Reecognition (NER)")
     st.write("Upload a pdf to extract entities")
@@ -27,7 +37,8 @@ def main():
             ner_instance.ner()
             dict = ner_instance.printNER()
             st.write("Entities recognized :")
-            st.write(dict)
+            display_entities(dict)
+            
 
 if __name__ == "__main__":
     main()
