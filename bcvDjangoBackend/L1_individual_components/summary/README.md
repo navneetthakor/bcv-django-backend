@@ -1,7 +1,7 @@
 
 ## Summarizer : To Summrize the contract in brief using the NER tags.
 
-### Install the dependencies in a virtual environment and execute main.py file.
+### Install the dependencies in a virtual environment and execute summary.py file.
 
 - Creating virtual environment :
 ```bash
