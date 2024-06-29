@@ -3,10 +3,20 @@ import time
 from pdfparser.pdfparser import PdfParser
 from ner.ner import Ner
 from pdfhighlighter.pdfhighlighter import PdfHighlighter
+from textclassifier.heading_classify import classify
+from textclassifier.textclassifier import TextClassifier
+from textcomparison.textcomparison import TextComparison
+from summary.summary import Summary
+import os 
 
 def get_pdf(key):
     pdf = st.file_uploader("Upload a file", type=["pdf"], key=key)
-    return pdf
+    if pdf:
+        # st.write(os.listdir('../bcvDjangoBackend/static'))
+        filepath ='../bcvDjangoBackend/static/' + key + pdf.name
+        with open(filepath , 'wb') as f:
+            f.write(pdf.read())
+        return  filepath
 
 def extract_text(pdf, heading):
     if(pdf != None):
@@ -44,15 +54,15 @@ def main():
     # Pdf Parser
 
     st.write("Provide a contract")
-    pdf1 = get_pdf("key1")
+    pdf1path = get_pdf("contract")
     time_a = time.perf_counter()
-    user_pdf = extract_text(pdf1, "Contract")
+    user_pdf = extract_text(pdf1path, "Contract")
     time_b = time.perf_counter()
 
     st.write("Provide a template")
-    pdf2 = get_pdf("key2")
+    pdf2path = get_pdf("template")
     time_c = time.perf_counter()
-    template_pdf = extract_text(pdf2, "Template")
+    template_pdf = extract_text(pdf2path, "Template")
     time_d = time.perf_counter()
 
     if template_pdf:
@@ -79,6 +89,53 @@ def main():
     print("Time taken to highlight pdf :", (time_h - time_g) , " seconds")
 
     # Text classifier
+    headings_path = '../L1_individual_components' + pdf2path[1:]
+    headings = classify(pdf2path)
+    st.title("FOUND HEADING")
+    st.write(headings)
+
+    text_classifier = TextClassifier(pdf2path," ", headings)
+    paragraphs_template = text_classifier.classify()
+    count = 1
+
+    st.title("TEMPLATE HEADING PARAGRAPH")
+    for heading, paragraph in paragraphs_template.items():
+        st.write(f"{count}: {heading}")
+        st.write(paragraph)
+        count += 1
+
+
+    headings_path = '../L1_individual_components' + pdf1path[1:]
+    text_classifier = TextClassifier(pdf1path," ", headings)
+    paragraphs_contract = text_classifier.classify()
+    count = 1
+
+    st.title("CONTRACT HEADING PARAGRAPH")
+    for heading, paragraph in paragraphs_contract.items():
+        st.write(f"{count}: {heading}")
+        st.write(paragraph)
+        count += 1
+
+    # Text Comparison
+    st.title("COMPARISON BETWEEN TEMPLATE AND CONTRACT")
+    text_compariosn = TextComparison(paragraphs_contract , paragraphs_template)
+
+    result = text_compariosn.comparator()
+
+    for index, item in enumerate(result):
+        key, value = item  # Assuming each element in self.dict is a tuple (key, value)
+        st.write(f"Index: {index}, Key: {key}, Value: {value}")
+
+    #summary
+    summrizer = Summary()
+    summary = summrizer.getSummary(dict ,user_pdf )
+    st.title("SUMMARY")
+    st.write(summary)
+
+
+
+
+
 
 if __name__ == "__main__":
     main()
