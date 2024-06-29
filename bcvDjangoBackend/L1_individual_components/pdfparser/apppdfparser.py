@@ -1,5 +1,5 @@
 import streamlit as st
-import pymupdf
+from pdfparser import PdfParser
 
 def get_pdf():
     pdf = st.file_uploader("Upload a file", type=["pdf"])
@@ -9,10 +9,8 @@ def extract_text(pdf):
     if(pdf != None):
         st.write("Text obtained from parsing the pdf:")
         text=""
-        with pymupdf.open(stream=pdf.read(), filetype="pdf") as doc:
-            for page in doc:
-                text += page.get_text()
-                text += "\n\n"
+        parser_instance = PdfParser(pdf)
+        text = parser_instance.readPdf()
         st.write(text)
 
 

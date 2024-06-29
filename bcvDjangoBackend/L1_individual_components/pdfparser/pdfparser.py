@@ -7,7 +7,14 @@ class PdfParser:
 
   def readPdf(self):
     try:
-      pdf = pymupdf.open(self.pdfPath)
+      # if filepath is present:
+      if isinstance(self.pdfPath, str):
+        pdf = pymupdf.open(self.pdfPath)
+
+      else:
+        # if file like object is present (mainly for streamlit)
+        pdf = pymupdf.open(stream=self.pdfPath.read(), filetype="pdf")
+        
       for page in pdf:
         self.text += page.get_text()
         self.text += "\n\n"
