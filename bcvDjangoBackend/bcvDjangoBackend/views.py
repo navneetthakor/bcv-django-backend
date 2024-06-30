@@ -9,6 +9,12 @@ import urllib.parse
 from django.conf import settings
 from L1_individual_components.textclassifier.heading_classify import classify
 
+
+# flair credential
+API_URL = "https://api-inference.huggingface.co/models/flair/ner-english-ontonotes-large"
+headers = {"Authorization": "Bearer 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"}
+
+
 # for contractify route 
 from ControlFlow.main import validatContract
 from django.views.decorators.csrf import csrf_exempt
@@ -97,6 +103,18 @@ def contractify(request):
 # route for testing 
 # ------------------
 def home(request):
+    print("i am running")
+    text = "This is the warm-up request to load the model in the memory"
+    payload = {
+	    "inputs": f"{text}"}
+    response = requests.post(API_URL, headers=headers, json=payload)
+
+    while response is None:
+        print("model is being loaded")
+
+    print("model is loaded")
+    print(response.json())
+
     return HttpResponse('I am running')
 
 
