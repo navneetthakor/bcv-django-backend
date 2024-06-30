@@ -8,7 +8,7 @@ def classify(pdfPath):
         for block in blocks:
             for line in block['lines']:
                 for span in line['spans']:
-                    if(span['flags'] == 20):
+                    if(span['flags'] != 0):
                         if(len(span['text']) > 3 ):
                             headings.append(span['text'])
     print(headings)
