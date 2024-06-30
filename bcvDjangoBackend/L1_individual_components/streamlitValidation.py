@@ -51,90 +51,121 @@ def highlight(text, textList):
 def main():
     st.title("BUSINESS CONTRACT VALIDATION")
 
+    
+    status = "parser"
     # Pdf Parser
+    if status == "parser":
+        st.write("Provide a contract")
+        pdf1path = get_pdf("contract")
+        time_a = time.perf_counter()
+        user_pdf = extract_text(pdf1path, "Contract")
+        time_b = time.perf_counter()
 
-    st.write("Provide a contract")
-    pdf1path = get_pdf("contract")
-    time_a = time.perf_counter()
-    user_pdf = extract_text(pdf1path, "Contract")
-    time_b = time.perf_counter()
+        st.write("Provide a template")
+        pdf2path = get_pdf("template")
+        time_c = time.perf_counter()
+        template_pdf = extract_text(pdf2path, "Template")
+        time_d = time.perf_counter()
 
-    st.write("Provide a template")
-    pdf2path = get_pdf("template")
-    time_c = time.perf_counter()
-    template_pdf = extract_text(pdf2path, "Template")
-    time_d = time.perf_counter()
-
-    if template_pdf:
-        st.write("time taken for parsing text : ", ((time_b-time_a) + (time_d-time_c)), " seconds")
+        if template_pdf:
+            st.write("time taken for parsing text : ", ((time_b-time_a) + (time_d-time_c)), " seconds")
+        
+        if not pdf1path and not pdf2path:
+            status = "parser"
+        else:
+            status = "ner"
+    
+    
 
     # NER
-    time_e = time.perf_counter()
-    dict={}
-    if user_pdf:
-        ner_instance = Ner(user_pdf)
-        ner_instance.ner()
-        dict = ner_instance.printNER()
-        st.write("Entities recognized in User Pdf :")
-        display_entities(dict)
-    time_f = time.perf_counter()
-    st.write("Time taken to perform NER : ", (time_f-time_e), " seconds")
+
+    if status == "ner":
+        time_e = time.perf_counter()
+        dict={}
+        if user_pdf:
+            ner_instance = Ner(user_pdf)
+            ner_instance.ner()
+            dict = ner_instance.printNER()
+            st.write("Entities recognized in User Pdf :")
+            display_entities(dict)
+        time_f = time.perf_counter()
+        st.write("Time taken to perform NER : ", (time_f-time_e), " seconds")
+
+        status = "highlighter"
 
     # Pdf Highlighting
-    time_g = time.perf_counter()
-    if dict.keys() is not None:
-        textList = list(dict.keys())
-        highlight(user_pdf, textList)
-    time_h = time.perf_counter()
-    print("Time taken to highlight pdf :", (time_h - time_g) , " seconds")
+    if status == "highlighter":
+        time_g = time.perf_counter()
+        if dict.keys() is not None:
+            textList = list(dict.keys())
+            highlight(user_pdf, textList)
+        time_h = time.perf_counter()
+        print("Time taken to highlight pdf :", (time_h - time_g) , " seconds")
+        status = "classifier"
 
     # Text classifier
-    headings_path = '../L1_individual_components' + pdf2path[1:]
-    headings = classify(pdf2path)
-    st.title("FOUND HEADING")
-    st.write(headings)
+    if status == "classifier":
+        time_i = time.perf_counter()
+        headings = classify(pdf2path)
+        st.title("FOUND HEADING")
+        st.write(headings)
 
-    text_classifier = TextClassifier(pdf2path," ", headings)
-    paragraphs_template = text_classifier.classify()
-    count = 1
+        text_classifier = TextClassifier(pdf2path," ", headings)
+        paragraphs_template = text_classifier.classify()
+        count = 1
 
-    st.title("TEMPLATE HEADING PARAGRAPH")
-    for heading, paragraph in paragraphs_template.items():
-        st.write(f"{count}: {heading}")
-        st.write(paragraph)
-        count += 1
+        st.title("TEMPLATE HEADING PARAGRAPH")
+        if paragraphs_template:
+            for heading, paragraph in paragraphs_template.items():
+                st.write(f"{count}: {heading}")
+                st.write(paragraph)
+                count += 1
 
 
-    headings_path = '../L1_individual_components' + pdf1path[1:]
-    text_classifier = TextClassifier(pdf1path," ", headings)
-    paragraphs_contract = text_classifier.classify()
-    count = 1
+        text_classifier = TextClassifier(pdf1path," ", headings)
+        paragraphs_contract = text_classifier.classify()
+        count = 1
 
-    st.title("CONTRACT HEADING PARAGRAPH")
-    for heading, paragraph in paragraphs_contract.items():
-        st.write(f"{count}: {heading}")
-        st.write(paragraph)
-        count += 1
+        st.title("CONTRACT HEADING PARAGRAPH")
+        if paragraphs_contract:
+            for heading, paragraph in paragraphs_contract.items():
+                st.write(f"{count}: {heading}")
+                st.write(paragraph)
+                count += 1
+        
+        time_j = time.perf_counter()
+
+        st.write("Time taken to find the heading & classify the template and contract pdf :", (time_j - time_i) , " seconds")
+        status = "Comparison"
+
+
 
     # Text Comparison
-    st.title("COMPARISON BETWEEN TEMPLATE AND CONTRACT")
-    text_compariosn = TextComparison(paragraphs_contract , paragraphs_template)
+    if status == "Comparison":
+        time_k = time.perf_counter()
+        st.title("COMPARISON BETWEEN TEMPLATE AND CONTRACT")
+        text_compariosn = TextComparison(paragraphs_contract , paragraphs_template)
 
-    result = text_compariosn.comparator()
+        result = text_compariosn.comparator()
 
-    for index, item in enumerate(result):
-        key, value = item  # Assuming each element in self.dict is a tuple (key, value)
-        st.write(f"Index: {index}, Key: {key}, Value: {value}")
+        for index, item in enumerate(result):
+            key, value = item  # Assuming each element in self.dict is a tuple (key, value)
+            st.write(f"Index: {index}, Key: {key}, Value: {value}")
+        
+        time_l = time.perf_counter()
+
+        st.write("Time taken to compare the template and contract :", (time_l - time_k) , " seconds")
+        status = "summary"
 
     #summary
-    summrizer = Summary()
-    summary = summrizer.getSummary(dict ,user_pdf )
-    st.title("SUMMARY")
-    st.write(summary)
-
-
-
-
+    if status == "summary":
+        time_m = time.perf_counter()
+        summrizer = Summary()
+        summary = summrizer.getSummary(dict , user_pdf)
+        st.title("SUMMARY")
+        st.write(summary)
+        time_n = time.perf_counter()
+        st.write("Time taken to summarize the contract :", (time_n - time_m) , " seconds")
 
 
 if __name__ == "__main__":
