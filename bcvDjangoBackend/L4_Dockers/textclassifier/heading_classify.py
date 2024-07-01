@@ -11,6 +11,6 @@ def classify(pdfPath):
                     if(span['flags'] != 0):
                         if(len(span['text']) > 3 ):
                             headings.append(span['text'])
-    print(headings)
+    print("headings are :\n",headings,"\n\n")
 
     return headings

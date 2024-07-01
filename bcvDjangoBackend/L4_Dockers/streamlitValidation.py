@@ -13,7 +13,7 @@ def get_pdf(key):
     pdf = st.file_uploader("Upload a file", type=["pdf"], key=key)
     if pdf:
         # st.write(os.listdir('../bcvDjangoBackend/static'))
-        filepath ='../bcvDjangoBackend/static/' + key + pdf.name
+        filepath ='./static/' + key + pdf.name
         with open(filepath , 'wb') as f:
             f.write(pdf.read())
         return  filepath

@@ -24,12 +24,12 @@ class Ner:
 
   def printNER(self):
     
-    print('The following NER tags are found:')
+    # print('The following NER tags are found:')
     ner_dict = {}
     for dicts in self.output:
       ner_dict[dicts["word"]] = [dicts["entity_group"], dicts["score"]]
     
-    print(ner_dict)
+    # print(ner_dict)
     hashable_ner_dict = tuple(ner_dict.items())
     return ner_dict
 
